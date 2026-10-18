@@ -8,7 +8,10 @@ import {
 export const filterByStatus = (
   reservations: Reservation[],
   status: StatusFilter,
-): Reservation[] => {};
+): Reservation[] => {
+    if (status === "all") return reservations;
+    return reservations.filter((reservation) => reservation.status === status)
+};
 
 export const sortReservations = (
   reservations: Reservation[],
@@ -19,17 +22,8 @@ export const sortReservations = (
   return reservations.sort((a, b) => {
     const dateCmp = a.date.localeCompare(b.date);
     const timeCmp = a.time.localeCompare(b.time);
-    const result = sortBy === "date" ? 
+    const result = sortBy === "date" ? dateCmp || timeCmp : timeCmp || dateCmp;
 
     return result * direction
   });
 };
-
-export const getStats = (
-  reservations: Reservation[],
-): {
-  total: number;
-  today: number;
-  confirmed: number;
-  cancelled: number;
-} => {};
