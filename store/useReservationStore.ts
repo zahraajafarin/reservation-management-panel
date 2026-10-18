@@ -1,12 +1,7 @@
-import { Reservation } from "@/types/reservation";
-import { ReservationStatus } from "@/types/status";
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import { MOCK_RESERVATIONS } from "@/lib/mock-data";
+import { Reservation, ReservationStatus, SortBy, SortOrder, StatusFilter } from "@/types/reservation";
 
-type SortBy = "date" | "time";
-type SortOrder = "asc" | "desc";
-type StatusFilter = ReservationStatus | "all";
+import { create } from "zustand";
+import { MOCK_RESERVATIONS } from "@/lib/mock-data";
 
 type ReservationStore = {
   reservations: Reservation[];
@@ -16,15 +11,15 @@ type ReservationStore = {
   sortOrder: SortOrder;
 
   addReservation: (data: Omit<Reservation, "id" | "status">) => void;
+  getReservationById: (id: string) => Reservation | undefined;
   updateStatus: (id: string, status: ReservationStatus) => void;
   setSearchQuery: (query: string) => void;
   setStatusFilter: (filter: StatusFilter) => void;
   setSort: (sortBy: SortBy, sortOrder: SortOrder) => void;
 };
 
-export const useReservationStore = create<ReservationStore>()(
-  persist(
-    (set, get) => ({
+export const useReservationStore = create<ReservationStore>(
+  (set, get) => ({
       reservations: MOCK_RESERVATIONS,
       searchQuery: "",
       statusFilter: "all",
@@ -45,17 +40,9 @@ export const useReservationStore = create<ReservationStore>()(
             r.id === id ? { ...r, status } : r,
           ),
         })),
-      getReservationsByCustomerName: (customerName: string) =>
-        get().reservations.filter((r) => r.customerName === customerName),
-      getReservationsByCustomerPhone: (customerPhone: string) =>
-        get().reservations.filter((r) => r.customerPhone === customerPhone),
       setSearchQuery: (query: string) => set({ searchQuery: query }),
       setStatusFilter: (filter: StatusFilter) => set({ statusFilter: filter }),
-      setSort: (sortBy: SortBy, sortOrder: SortOrder) => set({ sortBy, sortOrder }),
-    }),
-    {
-      name: "reservation-store",
-      storage: createJSONStorage(() => localStorage),
-    },
-  ),
+      setSort: (sortBy: SortBy, sortOrder: SortOrder) =>
+        set({ sortBy, sortOrder }),
+    })
 );

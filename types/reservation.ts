@@ -1,12 +1,16 @@
-import { ReservationStatus } from "./status";
+export type ReservationStatus = "pending" | "confirmed" | "cancelled";
 
 export type Reservation = {
   id: string;
   customerName: string;
   customerPhone: string;
-  date: string;
+  date: Date;
   time: string;
   service: string;
   description?: string;
   status: ReservationStatus;
 };
+
+export type SortBy = "date" | "time";
+export type SortOrder = "asc" | "desc";
+export type StatusFilter = ReservationStatus | "all";
