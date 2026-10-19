@@ -57,8 +57,14 @@ function Grid<T extends { id: string }>({
         </thead>
 
         <tbody className="divide-y divide-slate-100">
-          {data.map((item) => (
+          {data.map((item, index) => (
             <tr key={item.id}>
+               <td
+                  key={index}
+                  className="px-4 py-3 text-slate-700"
+                >
+                  {index + 1}
+                </td>
               {columns.map((column) => (
                 <td
                   key={String(column.key)}
