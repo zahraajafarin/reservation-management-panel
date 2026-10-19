@@ -1,0 +1,80 @@
+import { GridProps } from "@/types/common/grid";
+
+function Grid<T extends { id: string }>({
+  columns,
+  data,
+  sort,
+  onSort,
+  className = "",
+}: GridProps<T>) {
+  return (
+    <div
+      className={`overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm ${className}`}
+    >
+      <table className="w-full min-w-160 border-collapse text-sm">
+        <thead className="bg-slate-50">
+          <tr>
+            <th
+              scope="col"
+              className="w-12 px-4 py-3 text-start text-xs font-semibold text-slate-500"
+            >
+              ردیف
+            </th>
+            {columns.map((column, i) => {
+              const isActive = column.sortKey && sort?.key === column.sortKey;
+
+              return (
+                <th
+                  key={i}
+                  scope="col"
+                  aria-sort={
+                    isActive
+                      ? sort.order === "asc"
+                        ? "ascending"
+                        : "descending"
+                      : undefined
+                  }
+                  className={`px-4 py-3 text-start text-xs font-semibold text-slate-500 ${column.className ?? ""}`}
+                >
+                  {column.sortKey && onSort ? (
+                    <button
+                      type="button"
+                      onClick={() => onSort(column.sortKey!)}
+                      className="inline-flex items-center gap-1 rounded hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-indigo-500"
+                    >
+                      {column.value}
+                      <span aria-hidden="true">
+                        {isActive ? (sort.order === "asc" ? "▲" : "▼") : "↕"}
+                      </span>
+                    </button>
+                  ) : (
+                    column.value
+                  )}
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+
+        <tbody className="divide-y divide-slate-100">
+          {data.map((item) => (
+            <tr key={item.id}>
+              {columns.map((column) => (
+                <td
+                  key={String(column.key)}
+                  className="px-4 py-3 text-slate-700"
+                >
+                  {column.render
+                    ? column.render(item)
+                    : String(item[column.key] ?? "")}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default Grid;

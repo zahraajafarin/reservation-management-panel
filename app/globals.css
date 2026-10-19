@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f8f3ff;
   --foreground: #171717;
 }
 
@@ -19,8 +19,43 @@
   }
 }
 
+@layer base {
+  h1 {
+    @apply text-2xl font-bold md:text-3xl;
+  }
+  h2 {
+    @apply text-xl font-bold md:text-2xl;
+  }
+  h3 {
+    @apply text-lg font-bold md:text-xl;
+  }
+  h4 {
+    @apply text-base font-bold md:text-lg;
+  }
+  h5 {
+    @apply text-sm font-bold md:text-base;
+  }
+  h6 {
+    @apply text-xs font-bold md:text-sm;
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 3rem;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
+
