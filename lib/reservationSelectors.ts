@@ -13,6 +13,16 @@ export const filterByStatus = (
     return reservations.filter((reservation) => reservation.status === status)
 };
 
+export const searchReservations = (
+  reservations: Reservation[],
+  searchQuery: string
+) => {
+  if (!searchQuery || searchQuery == '') return reservations;
+
+  const searchedReservations = reservations.filter((reservation) => reservation.customerName.includes(searchQuery) || reservation.customerPhone.includes(searchQuery))
+  return searchedReservations
+}
+
 export const sortReservations = (
   reservations: Reservation[],
   sortBy: SortBy,

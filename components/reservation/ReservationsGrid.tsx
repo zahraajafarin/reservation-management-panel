@@ -3,7 +3,6 @@ import { Grid } from "@/components/ui";
 import { useReservationStore } from "@/store/useReservationStore";
 import { Column } from "@/types/common/grid";
 import { Reservation, SortBy } from "@/types/reservation";
-import { log } from "console";
 
 function ReservationsGrid() {
   const reservations = useReservationStore((s) => s.reservations);
