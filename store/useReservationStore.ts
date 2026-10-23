@@ -1,7 +1,7 @@
 import { Reservation, ReservationStatus, SortBy, SortOrder, StatusFilter } from "@/types/reservation";
 
 import { create } from "zustand";
-import { MOCK_RESERVATIONS } from "@/lib/mock-data";
+import { MOCK_RESERVATIONS } from "@/lib/constants/mock-data";
 
 type ReservationStore = {
   reservations: Reservation[];

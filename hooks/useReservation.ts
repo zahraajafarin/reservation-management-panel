@@ -6,7 +6,7 @@ import {
   searchReservations,
   filterByStatus,
   sortReservations,
-} from "@/lib/reservationSelectors";
+} from "@/lib/reservation/reservationSelectors";
 
 export function useReservations() {
   const reservations = useReservationStore((s) => s.reservations);
