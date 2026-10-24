@@ -22,5 +22,4 @@ export type ReservationFormValues = {
   time: string;
   service: string;
   description?: string;
-  status: ReservationStatus;
 };

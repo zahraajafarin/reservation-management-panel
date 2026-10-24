@@ -1,65 +1,37 @@
-import { getDaysFromToday, getLocalTime } from "@/lib/utils/date";
 import * as yup from "yup";
+import { normalizeDigits } from "@/lib/utils/number";
+import { getDaysFromToday } from "@/lib/utils/date";
 
 export const reservationSchema = yup.object({
   customerName: yup
     .string()
     .trim()
-    .required("وارد کردن نام مشتری الزامی است"),
+    .required("نام مشتری را وارد کنید")
+    .min(3, "نام باید حداقل ۳ حرف باشد"),
 
-  phone: yup
+  customerPhone: yup
     .string()
-    .required("وارد کردن شماره تماس الزامی است")
-    .matches(/^09\d{9}$/, {
-      message: "شماره تماس باید ۱۱ رقم و با 09 شروع شود",
-    //   excludeEmptyString: true,
-    }),
+    .transform((v) => normalizeDigits(v ?? "").replace(/\s|-/g, ""))
+    .required("شماره تماس را وارد کنید")
+    .matches(/^09\d{9}$/, "شماره موبایل معتبر نیست (مثال: 09121234567)"),
 
-  serviceType: yup
-    .string()
-    .required("وارد کردن نوع خدمت الزامی است"),
+  service: yup.string().trim().required("نوع خدمت را وارد کنید"),
 
-  reservationDate: yup
+  date: yup
     .string()
-    .required("انتخاب تاریخ رزرو الزامی است")
+    .required("تاریخ رزرو را انتخاب کنید")
     .test(
-      "not-past-date",
-      "تاریخ رزرو نمی‌تواند قبل از امروز باشد",
-      (value) => !value || value >= getDaysFromToday(0)
+      "not-in-past",
+      "تاریخ رزرو نمی‌تواند گذشته باشد",
+      (value) => !value || value >= getDaysFromToday(0),
     ),
 
-  reservationTime: yup
+  time: yup
     .string()
-    .required("انتخاب ساعت رزرو الزامی است")
-    .matches(/^([01]\d|2[0-3]):[0-5]\d$/, {
-      message: "ساعت رزرو معتبر نیست",
-      excludeEmptyString: true,
-    })
-    .test(
-      "not-past-time",
-      "ساعت رزرو باید از ساعت فعلی به بعد باشد",
-      function (value) {
-        const { reservationDate } = this.parent;
+    .required("ساعت رزرو را انتخاب کنید")
+    .matches(/^([01]\d|2[0-3]):[0-5]\d$/, "ساعت معتبر نیست"),
 
-        // خطاهای خالی بودن و فرمت ساعت جداگانه بررسی می‌شوند.
-        if (!value || !reservationDate) return true;
-
-        const today = getDaysFromToday(0);
-
-        // برای تاریخ‌های آینده، ساعت گذشته‌ی امروز اهمیتی ندارد.
-        if (reservationDate > today) return true;
-
-        // اگر تاریخ گذشته باشد، اعتبارسنجی تاریخ خطا می‌دهد.
-        if (reservationDate < today) return true;
-
-        // اگر تاریخ امروز باشد، ساعت باید جلوتر از ساعت فعلی باشد.
-        return value > getLocalTime();
-      }
-    ),
-
-  description: yup.string().optional(),
+  description: yup.string().trim().max(300, "حداکثر ۳۰۰ کاراکتر").default(""),
 });
 
-export type ReservationFormValues = yup.InferType<
-  typeof reservationSchema
->;
+export type ReservationFormInput = yup.InferType<typeof reservationSchema>;

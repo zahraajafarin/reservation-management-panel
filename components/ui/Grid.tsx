@@ -20,20 +20,21 @@ function Grid<T extends { id: string }>({
             >
               ردیف
             </th>
-            {columns.map((column, i) => {
-              const isActive = column.sortKey && sort?.key === column.sortKey;
+            {columns.map((column) => {
+              const isActive =
+                !!column.sortKey && sort?.key === column.sortKey;
+              const ariaSort =
+                isActive && sort
+                  ? sort.order === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : undefined;
 
               return (
                 <th
-                  key={i}
+                  key={column.id}
                   scope="col"
-                  aria-sort={
-                    isActive
-                      ? sort.order === "asc"
-                        ? "ascending"
-                        : "descending"
-                      : undefined
-                  }
+                  aria-sort={ariaSort}
                   className={`px-4 py-3 text-start text-xs font-semibold text-slate-500 ${column.className ?? ""}`}
                 >
                   {column.sortKey && onSort ? (
@@ -44,7 +45,9 @@ function Grid<T extends { id: string }>({
                     >
                       {column.value}
                       <span aria-hidden="true">
-                        {isActive ? (sort.order === "asc" ? "▲" : "▼") : "↕"}
+                        {isActive && sort
+                          ? sort.order === "asc" ? "▲" : "▼"
+                          : "↕"}
                       </span>
                     </button>
                   ) : (
@@ -59,20 +62,14 @@ function Grid<T extends { id: string }>({
         <tbody className="divide-y divide-slate-100">
           {data.map((item, index) => (
             <tr key={item.id}>
-               <td
-                  key={index}
-                  className="px-4 py-3 text-slate-700"
-                >
-                  {index + 1}
-                </td>
+              <td className="px-4 py-3 text-slate-400">{index + 1}</td>
               {columns.map((column) => (
-                <td
-                  key={String(column.key)}
-                  className="px-4 py-3 text-slate-700"
-                >
+                <td key={column.id} className="px-4 py-3 text-slate-700">
                   {column.render
                     ? column.render(item)
-                    : String(item[column.key] ?? "")}
+                    : column.key
+                      ? String(item[column.key] ?? "")
+                      : null}
                 </td>
               ))}
             </tr>

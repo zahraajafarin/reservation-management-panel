@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 
 export type Column<T> = {
-  key: keyof T;
+  id: string;
+  key?: keyof T;
   value: string;
   className?: string;
   sortKey?: string;
