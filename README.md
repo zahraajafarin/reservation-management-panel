@@ -64,7 +64,7 @@ types/                  TypeScript types
 
 **"Today" is read only in the browser.** Next.js prerenders pages at build time, and reading the current time during render would freeze the build date into the output. For that reason today's date is read after mount in the browser, and the mock data is generated with dates relative to the current day.
 
-**RTL.** The page direction is set in the root layout, and styles use logical properties (`text-start`, `ms-*`, `ps-*`) so the layout does not depend on direction.
+**RTL.** The page direction is set in the root layout.
 
 **Validation.** The Yup schema lives in its own file, and the form logic lives in the `useReservationForm` hook so the component only contains JSX. Phone numbers are normalized from Persian digits to English before validation, and past dates are rejected.
 
