@@ -5,7 +5,7 @@ import { MOCK_RESERVATIONS } from "@/lib/constants/mock-data";
 
 export const useReservationStore = create<ReservationStore>(
   (set, get) => ({
-      reservations: [],
+      reservations: MOCK_RESERVATIONS,
       searchQuery: "",
       statusFilter: "all",
       sortBy: "date",
