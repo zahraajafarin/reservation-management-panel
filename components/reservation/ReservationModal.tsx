@@ -44,19 +44,22 @@ function ReservationModal({showModal, setShowModal}: ReservationModalProps) {
         });
         setErrors(next);
       }
-      toast.error("ثبت رزرو با خطا مواجه شد");
     }
   }
 
    const onSubmit = (formData: ReservationFormValues) => {
-    addReservation({
-      customerName: formData.customerName,
-      customerPhone: formData.customerPhone,
-      date: formData.date,
-      time: formData.time,
-      service: formData.service,
-    })
-    toast.success("رزرو جدید با موفقیت ثبت شد");
+    try{
+      addReservation({
+        customerName: formData.customerName,
+        customerPhone: formData.customerPhone,
+        date: formData.date,
+        time: formData.time,
+        service: formData.service,
+      })
+      toast.success("رزرو جدید با موفقیت ثبت شد");
+    } catch (err) {
+      toast.error("ثبت رزرو با خطا مواجه شد");
+    }
   }
 
   return (
