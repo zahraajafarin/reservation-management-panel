@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 import localFont from 'next/font/local'
+import { Toaster } from "sonner";
 
 const parastoo = localFont({
   src: [
@@ -37,7 +38,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
           <Footer />
         </div>
-        </body>
+        <Toaster dir="rtl" position="bottom-left" richColors />
+      </body>
     </html>
   );
 }

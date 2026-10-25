@@ -7,6 +7,7 @@ function Grid<T extends { id: string }>({
   onSort,
   className = "",
 }: GridProps<T>) {
+  const colSpan = columns.length + 1;
   return (
     <div
       className={`overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm ${className}`}
@@ -60,7 +61,13 @@ function Grid<T extends { id: string }>({
         </thead>
 
         <tbody className="divide-y divide-slate-100">
-          {data.map((item, index) => (
+          { !data || data.length == 0 ? (
+            <tr className="text-center">
+              <td colSpan={colSpan} className="px-4 py-4 text-center text-slate-500">
+                داده یافت نشد.
+              </td>
+            </tr>
+          ) : data.map((item, index) => (
             <tr key={item.id}>
               <td className="px-4 py-3 text-slate-400">{index + 1}</td>
               {columns.map((column) => (

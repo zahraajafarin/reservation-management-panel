@@ -33,12 +33,10 @@ npm start
 - [x] Sorting by date or time from the column headers
 - [x] Customer search by name or phone number (debounced)
 - [x] New reservation modal with validation and Persian error messages
-- [ ] Filter by reservation status
+- [x] Filter by reservation status
 - [x] Reservation details view
 - [x] Change reservation status
-- [ ] Success and error messages (toast)
-- [ ] Loading, empty and error states
-- [ ] Card layout for the table on mobile
+- [x] Success and error messages (toast)
 
 ## Project Structure
 

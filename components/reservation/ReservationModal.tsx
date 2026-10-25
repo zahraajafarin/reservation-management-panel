@@ -8,6 +8,7 @@ import { reservationSchema } from "@/schema/addNewReservationForm";
 import { ValidationError } from "yup";
 
 import type { Dispatch, SetStateAction } from "react";
+import { toast } from "sonner";
 
 export type ReservationModalProps = {
   showModal: boolean;
@@ -30,20 +31,21 @@ function ReservationModal({showModal, setShowModal}: ReservationModalProps) {
      const hanndleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-    const valid = await reservationSchema.validate(newReservationInput, {
-      abortEarly: false,
-    });
-    setErrors({});
-    onSubmit(valid);
-  } catch (err) {
-    if (err instanceof ValidationError) {
-      const next: Record<string, string> = {};
-      err.inner.forEach((issue) => {
-        if (issue.path && !next[issue.path]) next[issue.path] = issue.message;
+      const valid = await reservationSchema.validate(newReservationInput, {
+        abortEarly: false,
       });
-      setErrors(next);
+      setErrors({});
+      onSubmit(valid);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        const next: Record<string, string> = {};
+        err.inner.forEach((issue) => {
+          if (issue.path && !next[issue.path]) next[issue.path] = issue.message;
+        });
+        setErrors(next);
+      }
+      toast.error("ثبت رزرو با خطا مواجه شد");
     }
-  }
   }
 
    const onSubmit = (formData: ReservationFormValues) => {
@@ -54,6 +56,7 @@ function ReservationModal({showModal, setShowModal}: ReservationModalProps) {
       time: formData.time,
       service: formData.service,
     })
+    toast.success("رزرو جدید با موفقیت ثبت شد");
   }
 
   return (
